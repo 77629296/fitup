@@ -1,0 +1,12 @@
+{
+  "name": "fitup",
+  "version": "1.0.0",
+  "private": true,
+  "description": "<div align=\"center\"> <h1>FitUp</h1>",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
