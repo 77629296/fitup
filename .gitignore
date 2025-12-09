@@ -12,10 +12,10 @@
 
 # testing
 /coverage
+/vitest-test-results
 
 # next.js
 /.next/
-/_next/
 /out/
 
 # production
@@ -24,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -31,12 +32,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env
-.env.local
-.env.test
-.env.development
-.env.production
+# local env files
+.env*.local
+
+# Sentry Config File
+.env.sentry-build-plugin
+
+# local folder
+local
 
 # vercel
 .vercel
@@ -45,11 +48,15 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# editors
-.idea
-.zed
-scripts/private/
-scripts/personal/
-product-development/
-.claude/
-.cache/
+# Database
+*.db
+
+# storybook
+storybook-static
+*storybook.log
+build-archive.log
+
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
