@@ -1,6 +1,8 @@
 import type { ReactElement } from "react";
 import type { Metadata } from "next";
 
+import "@/shared/styles/globals.css";
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   return {
     title: {
