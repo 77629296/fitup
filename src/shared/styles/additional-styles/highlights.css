@@ -1,0 +1,55 @@
+/* Custom Highlights - Une alternative légère à tailwindcss-highlights */
+
+/* Variante 1: Highlight primaire */
+.highlight-primary {
+  background: linear-gradient(to bottom, transparent 40%, var(--color-accent-pink) 40%, var(--color-accent-pink) 80%, transparent 80%);
+  padding: 0.6em 0.25em;
+  border-radius: 0.25em;
+}
+
+.highlight-red {
+  background: linear-gradient(to bottom, transparent 40%, var(--color-accent-red) 40%, var(--color-accent-red) 80%, transparent 80%);
+  padding: 2em 0.125em;
+  border-radius: 0.25em;
+}
+
+/* Variante 2: Highlight avec soulignement accentué */
+.highlight-underline {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-red);
+  text-decoration-thickness: 0.2em;
+  text-underline-offset: 0.2em;
+}
+
+/* Variante 3: Highlight avec fond discret */
+.highlight-soft {
+  background-color: var(--color-accent-orange);
+  padding: 0.15em 0.4em;
+  border-radius: 0.2em;
+}
+
+/* Variante 4: Highlight marqueur style brutaliste */
+.highlight-marker {
+  background: linear-gradient(to bottom, transparent 30%, var(--color-accent) 30%, var(--color-accent) 90%, transparent 90%);
+  font-weight: 600;
+  padding: 0.45em 0.1em;
+  padding-bottom: 0.2em;
+}
+
+/* Variante 5: Highlight encadré */
+.highlight-box {
+  border: 2px solid var(--color-primary);
+  box-shadow: 3px 3px 0 var(--color-accent);
+  border-radius: 0.2em;
+  padding: 0.15em 0.4em;
+  margin: 0 0.1em;
+}
+
+/* Animation optionnelle pour les highlights */
+.highlight-animated {
+  transition: all 0.3s ease;
+}
+
+.highlight-animated:hover {
+  transform: translateY(-2px);
+}
