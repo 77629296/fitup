@@ -1,6 +1,8 @@
 import type { ReactElement } from "react";
 import type { Metadata } from "next";
 
+import { Providers } from "app/[locale]/providers";
+
 import "@/shared/styles/globals.css";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -76,11 +78,13 @@ export default async function RootLayout({ params, children }: RootLayoutProps) 
         <body
           suppressHydrationWarning
         >
-          <div className="flex flex-col w-full">
-            <div className="flex justify-center items-start gap-4 w-full">
-              {children}
+          <Providers locale={locale}>
+            <div className="flex flex-col w-full">
+              <div className="flex justify-center items-start gap-4 w-full">
+                {children}
+              </div>
             </div>
-          </div>
+          </Providers>
         </body>
       </html>
     </>
