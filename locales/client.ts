@@ -32,3 +32,5 @@ export const { useI18n, I18nProviderClient } = createI18nClient(
     },
   }
 )
+
+export type TFunction = Awaited<ReturnType<typeof useI18n>>;

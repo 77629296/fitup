@@ -1,3 +1,6 @@
+import { ExerciseAttributeValueEnum } from "@prisma/client";
+import { StaticImageData } from "next/image";
+
 export type WorkoutBuilderStep = 1 | 2 | 3;
 
 export interface StepperStepProps {
@@ -6,4 +9,12 @@ export interface StepperStepProps {
   description: string;
   isActive: boolean;
   isCompleted: boolean;
+}
+
+export interface EquipmentItem {
+  value: ExerciseAttributeValueEnum;
+  label: string;
+  icon: StaticImageData;
+  description?: string;
+  className?: string;
 }
