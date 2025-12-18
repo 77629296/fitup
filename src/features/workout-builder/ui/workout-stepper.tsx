@@ -8,6 +8,7 @@ import { useWorkoutStepper } from '../hooks/use-workout-stepper';
 import { StepperHeader } from './stepper-header';
 import { EquipmentSelection } from './equipment-selection'
 import { StepperStepProps } from "../types";
+import { WorkoutBuilderFooter } from "./workout-stepper-footer";
 
 export function WorkoutStepper() {
   const t = useI18n();
@@ -17,7 +18,12 @@ export function WorkoutStepper() {
     selectedEquipment,
     toggleEquipment,
     clearEquipment,
+    nextStep,
+    prevStep,
   } = useWorkoutStepper();
+
+  const handleStartWorkout = () => { };
+  const canContinue = true;
 
   const handleToggleEquipment = (equipment: ExerciseAttributeValueEnum) => {
     toggleEquipment(equipment);
@@ -80,5 +86,13 @@ export function WorkoutStepper() {
   return <div className="w-full max-w-6xl mx-auto h-full">
     <StepperHeader currentStep={currentStep} steps={steps} />
     <div className="px-2 sm:px-6">{renderStepContent()}</div>
+    <WorkoutBuilderFooter
+      canContinue={canContinue}
+      currentStep={currentStep}
+      onNext={nextStep}
+      onPrevious={prevStep}
+      onStartWorkout={handleStartWorkout}
+      totalSteps={STEPPER_STEPS.length}
+    />
   </div>
 }

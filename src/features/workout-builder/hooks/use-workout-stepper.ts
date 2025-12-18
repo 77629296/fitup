@@ -8,11 +8,17 @@ export function useWorkoutStepper() {
     selectedEquipment,
     toggleEquipment,
     clearEquipment,
+    nextStep,
+    prevStep,
   } = useWorkoutBuilderStore();
   return {
     // state
     currentStep,
     selectedEquipment,
+
+    // navigation
+    nextStep,
+    prevStep,
 
     // equipment
     toggleEquipment,
