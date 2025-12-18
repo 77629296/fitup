@@ -9,6 +9,8 @@ interface WorkoutBuilderState {
 
   // Actions
   setStep: (step: WorkoutBuilderStep) => void;
+  nextStep: () => void;
+  prevStep: () => void;
   toggleEquipment: (equipment: ExerciseAttributeValueEnum) => void;
   clearEquipment: () => void;
 }
@@ -18,6 +20,8 @@ export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => 
   selectedEquipment: [],
 
   setStep: (step) => set({ currentStep: step }),
+  nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 3) as WorkoutBuilderStep })),
+  prevStep: () => set((state) => ({ currentStep: Math.max(state.currentStep - 1, 1) as WorkoutBuilderStep })),
 
   toggleEquipment: (equipment) =>
     set((state) => ({
