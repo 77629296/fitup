@@ -7,6 +7,7 @@ import { useQueryState } from "nuqs";
 import { useWorkoutStepper } from '../hooks/use-workout-stepper';
 import { StepperHeader } from './stepper-header';
 import { EquipmentSelection } from './equipment-selection'
+import { MuscleSelection } from './muscle-selection';
 import { StepperStepProps } from "../types";
 import { WorkoutBuilderFooter } from "./workout-stepper-footer";
 
@@ -75,7 +76,9 @@ export function WorkoutStepper() {
           />
         )
       case 2:
-        return (2)
+        return (
+          <MuscleSelection />
+        );
       case 3:
         return (3)
       default:
