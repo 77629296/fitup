@@ -6,8 +6,10 @@ export function useWorkoutStepper() {
   const {
     currentStep,
     selectedEquipment,
+    selectedMuscles,
     toggleEquipment,
     clearEquipment,
+    toggleMuscle,
     nextStep,
     prevStep,
   } = useWorkoutBuilderStore();
@@ -15,6 +17,7 @@ export function useWorkoutStepper() {
     // state
     currentStep,
     selectedEquipment,
+    selectedMuscles,
 
     // navigation
     nextStep,
@@ -23,5 +26,8 @@ export function useWorkoutStepper() {
     // equipment
     toggleEquipment,
     clearEquipment,
+
+    // muscles
+    toggleMuscle,
   }
 }

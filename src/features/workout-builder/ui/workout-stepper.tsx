@@ -17,11 +17,18 @@ export function WorkoutStepper() {
   const {
     currentStep,
     selectedEquipment,
+    selectedMuscles,
     toggleEquipment,
     clearEquipment,
+    toggleMuscle,
     nextStep,
     prevStep,
   } = useWorkoutStepper();
+
+  const handleToggleMuscle = (muscle: ExerciseAttributeValueEnum) => {
+    toggleMuscle(muscle);
+    if (fromSession) setFromSession(null);
+  };
 
   const handleStartWorkout = () => { };
   const canContinue = true;
@@ -77,7 +84,7 @@ export function WorkoutStepper() {
         )
       case 2:
         return (
-          <MuscleSelection />
+          <MuscleSelection onToggleMuscle={handleToggleMuscle} selectedEquipment={selectedEquipment} selectedMuscles={selectedMuscles} />
         );
       case 3:
         return (3)

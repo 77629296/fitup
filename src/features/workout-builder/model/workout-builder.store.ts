@@ -6,6 +6,8 @@ import { WorkoutBuilderStep } from '../types';
 interface WorkoutBuilderState {
   currentStep: WorkoutBuilderStep;
   selectedEquipment: ExerciseAttributeValueEnum[];
+  selectedMuscles: ExerciseAttributeValueEnum[];
+
 
   // Actions
   setStep: (step: WorkoutBuilderStep) => void;
@@ -13,11 +15,13 @@ interface WorkoutBuilderState {
   prevStep: () => void;
   toggleEquipment: (equipment: ExerciseAttributeValueEnum) => void;
   clearEquipment: () => void;
+  toggleMuscle: (muscle: ExerciseAttributeValueEnum) => void;
 }
 
 export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => ({
   currentStep: 1 as WorkoutBuilderStep,
   selectedEquipment: [],
+  selectedMuscles: [],
 
   setStep: (step) => set({ currentStep: step }),
   nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 3) as WorkoutBuilderStep })),
@@ -30,4 +34,10 @@ export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => 
         : [...state.selectedEquipment, equipment],
     })),
   clearEquipment: () => set({ selectedEquipment: [] }),
+  toggleMuscle: (muscle) =>
+    set((state) => ({
+      selectedMuscles: state.selectedMuscles.includes(muscle)
+        ? state.selectedMuscles.filter((m) => m !== muscle)
+        : [...state.selectedMuscles, muscle],
+    })),
 }))
