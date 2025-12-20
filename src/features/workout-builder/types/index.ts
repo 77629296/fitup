@@ -1,6 +1,9 @@
 import { ExerciseAttributeValueEnum } from "@prisma/client";
 import { StaticImageData } from "next/image";
 
+import { ExerciseWithAttributes } from '@/entities/exercise/types/exercise.types';
+export type { ExerciseWithAttributes };
+
 export type WorkoutBuilderStep = 1 | 2 | 3;
 
 export interface StepperStepProps {

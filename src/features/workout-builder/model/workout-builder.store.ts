@@ -8,6 +8,11 @@ interface WorkoutBuilderState {
   selectedEquipment: ExerciseAttributeValueEnum[];
   selectedMuscles: ExerciseAttributeValueEnum[];
 
+  exercisesByMuscle: any[]; //TODO: type this
+  isLoadingExercises: boolean;
+
+  exercisesError: any; //TODO: type this
+  exercisesOrder: string[];
 
   // Actions
   setStep: (step: WorkoutBuilderStep) => void;
@@ -22,6 +27,10 @@ export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => 
   currentStep: 1 as WorkoutBuilderStep,
   selectedEquipment: [],
   selectedMuscles: [],
+  exercisesByMuscle: [],
+  isLoadingExercises: false,
+  exercisesError: null,
+  exercisesOrder: [],
 
   setStep: (step) => set({ currentStep: step }),
   nextStep: () => set((state) => ({ currentStep: Math.min(state.currentStep + 1, 3) as WorkoutBuilderStep })),

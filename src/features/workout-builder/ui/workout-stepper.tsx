@@ -8,6 +8,7 @@ import { useWorkoutStepper } from '../hooks/use-workout-stepper';
 import { StepperHeader } from './stepper-header';
 import { EquipmentSelection } from './equipment-selection'
 import { MuscleSelection } from './muscle-selection';
+import { ExercisesSelection } from './exercises-selection';
 import { StepperStepProps } from "../types";
 import { WorkoutBuilderFooter } from "./workout-stepper-footer";
 
@@ -18,6 +19,9 @@ export function WorkoutStepper() {
     currentStep,
     selectedEquipment,
     selectedMuscles,
+    exercisesByMuscle,
+    isLoadingExercises,
+    exercisesError,
     toggleEquipment,
     clearEquipment,
     toggleMuscle,
@@ -87,7 +91,18 @@ export function WorkoutStepper() {
           <MuscleSelection onToggleMuscle={handleToggleMuscle} selectedEquipment={selectedEquipment} selectedMuscles={selectedMuscles} />
         );
       case 3:
-        return (3)
+        return (
+          <ExercisesSelection
+            error={exercisesError}
+            exercisesByMuscle={exercisesByMuscle}
+            isLoading={isLoadingExercises}
+            onAdd={() => { }}
+            onDelete={() => { }}
+            onPick={() => { }}
+            onShuffle={() => { }}
+            shufflingExerciseId={() => { }}
+          />
+        )
       default:
         return null;
     }
