@@ -7,6 +7,10 @@ export function useWorkoutStepper() {
     currentStep,
     selectedEquipment,
     selectedMuscles,
+    exercisesByMuscle,
+    isLoadingExercises,
+    exercisesError,
+    exercisesOrder,
     toggleEquipment,
     clearEquipment,
     toggleMuscle,
@@ -19,6 +23,10 @@ export function useWorkoutStepper() {
     selectedEquipment,
     selectedMuscles,
 
+    exercisesByMuscle,
+    isLoadingExercises,
+    exercisesError,
+
     // navigation
     nextStep,
     prevStep,
@@ -29,5 +37,7 @@ export function useWorkoutStepper() {
 
     // muscles
     toggleMuscle,
+
+    exercisesOrder,
   }
 }
