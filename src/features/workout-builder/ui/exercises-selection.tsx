@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 
 import { ExerciseWithAttributes } from '../types';
 import { useWorkoutStepper } from "../hooks/use-workout-stepper";
+import { ExerciseListItem } from "./exercise-list-item";
 import { useI18n } from "locales/client";
 
 interface ExercisesSelectionProps {
@@ -69,7 +70,22 @@ export const ExercisesSelection = ({
     <div className="space-y-6">
       {flatExercises.length > 0 ? (
         <div className="max-w-4xl mx-auto">
-          test
+          <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
+            {flatExercises.map((item) => (
+              <ExerciseListItem />
+            ))}
+            <div className="border-t border-slate-200 dark:border-slate-800">
+              <button
+                className="w-full flex items-center gap-3 py-4 px-4 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
+                onClick={onAdd}
+              >
+                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
+                  <Plus className="h-4 w-4 text-white" />
+                </div>
+                <span className="font-medium">{t("commons.add")}</span>
+              </button>
+            </div>
+          </div>
         </div>
       ) : error ? (
         <div className="text-center py-20">
