@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { ExerciseAttributeValueEnum } from '@prisma/client';
 
 import { WorkoutBuilderStep } from '../types';
+import { getExercisesAction } from "../actions/get-exercises.action";
 
 interface WorkoutBuilderState {
   currentStep: WorkoutBuilderStep;
@@ -21,6 +22,7 @@ interface WorkoutBuilderState {
   toggleEquipment: (equipment: ExerciseAttributeValueEnum) => void;
   clearEquipment: () => void;
   toggleMuscle: (muscle: ExerciseAttributeValueEnum) => void;
+  fetchExercises: () => Promise<void>;
 }
 
 export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => ({
@@ -43,6 +45,29 @@ export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => 
         : [...state.selectedEquipment, equipment],
     })),
   clearEquipment: () => set({ selectedEquipment: [] }),
+  fetchExercises: async () => {
+    set({
+      isLoadingExercises: true,
+      exercisesError: null,
+    })
+    try {
+      const { selectedEquipment, selectedMuscles } = get();
+      const result = await getExercisesAction({
+        equipment: selectedEquipment,
+        muscles: selectedMuscles,
+        limit: 3,
+      });
+      if (result?.serverError) {
+        throw new Error(result.serverError);
+      }
+      console.log('selectedEquipment', selectedEquipment);
+      console.log('selectedMuscles', selectedMuscles);
+      console.log('getExercisesAction', result);
+      set({ exercisesByMuscle: result?.data || [], isLoadingExercises: false });
+    } catch (error) {
+      set({ exercisesError: error, isLoadingExercises: false });
+    }
+  },
   toggleMuscle: (muscle) =>
     set((state) => ({
       selectedMuscles: state.selectedMuscles.includes(muscle)

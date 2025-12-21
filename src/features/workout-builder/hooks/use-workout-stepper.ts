@@ -16,6 +16,7 @@ export function useWorkoutStepper() {
     toggleMuscle,
     nextStep,
     prevStep,
+    fetchExercises,
   } = useWorkoutBuilderStore();
   return {
     // state
@@ -39,5 +40,7 @@ export function useWorkoutStepper() {
     toggleMuscle,
 
     exercisesOrder,
+
+    fetchExercises,
   }
 }

@@ -31,7 +31,23 @@ export const ExercisesSelection = ({
   const { exercisesOrder } = useWorkoutStepper();
 
   const flatExercisesComputed = useMemo(() => {
+    console.log('exercisesByMuscle', exercisesByMuscle)
     if (exercisesByMuscle.length === 0) return [];
+    const flat = exercisesByMuscle.flatMap((group) =>
+      group.exercises.map((exercise) => ({
+        id: exercise.id,
+        muscle: group.muscle,
+        exercise,
+      }))
+    );
+
+    if (exercisesOrder.length === 0) return flat;
+
+    const exerciseMap = new Map(flat.map((item) => [item.id, item]));
+    const orderedFlat = exercisesOrder.map((id) => exerciseMap.get(id)).filter(Boolean) as typeof flat;
+    const newExercises = flat.filter((item) => !exercisesOrder.includes(item.id));
+
+    return [...orderedFlat, ...newExercises];
   }, [exercisesByMuscle, exercisesOrder]);
 
   useEffect(() => {

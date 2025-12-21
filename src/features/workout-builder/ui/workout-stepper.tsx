@@ -4,6 +4,8 @@ import { useI18n } from "locales/client";
 import { ExerciseAttributeValueEnum } from "@prisma/client";
 import { useQueryState } from "nuqs";
 
+import useBoolean from "@/shared/hooks/useBoolean";
+
 import { useWorkoutStepper } from '../hooks/use-workout-stepper';
 import { StepperHeader } from './stepper-header';
 import { EquipmentSelection } from './equipment-selection'
@@ -11,6 +13,8 @@ import { MuscleSelection } from './muscle-selection';
 import { ExercisesSelection } from './exercises-selection';
 import { StepperStepProps } from "../types";
 import { WorkoutBuilderFooter } from "./workout-stepper-footer";
+import { AddExerciseModal } from "./add-exercise-modal";
+import { useEffect } from "react";
 
 export function WorkoutStepper() {
   const t = useI18n();
@@ -27,11 +31,23 @@ export function WorkoutStepper() {
     toggleMuscle,
     nextStep,
     prevStep,
+    fetchExercises,
   } = useWorkoutStepper();
+
+  useEffect(() => {
+    if (currentStep === 3 && !fromSession) {
+      fetchExercises();
+    }
+  }, [currentStep, selectedEquipment, selectedMuscles, fromSession]);
 
   const handleToggleMuscle = (muscle: ExerciseAttributeValueEnum) => {
     toggleMuscle(muscle);
     if (fromSession) setFromSession(null);
+  };
+
+  const addExerciseModal = useBoolean();
+  const handleAddExercise = () => {
+    addExerciseModal.setTrue();
   };
 
   const handleStartWorkout = () => { };
@@ -96,7 +112,7 @@ export function WorkoutStepper() {
             error={exercisesError}
             exercisesByMuscle={exercisesByMuscle}
             isLoading={isLoadingExercises}
-            onAdd={() => { }}
+            onAdd={handleAddExercise}
             onDelete={() => { }}
             onPick={() => { }}
             onShuffle={() => { }}
@@ -119,5 +135,6 @@ export function WorkoutStepper() {
       onStartWorkout={handleStartWorkout}
       totalSteps={STEPPER_STEPS.length}
     />
+    <AddExerciseModal isOpen={addExerciseModal} />
   </div>
 }
