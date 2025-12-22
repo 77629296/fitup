@@ -4,7 +4,7 @@ import { createI18nClient } from 'next-international/client';
 
 export const languages = ["en", "fr", "es", "zh-CN", "ru", "pt"];
 
-export const { useI18n, I18nProviderClient } = createI18nClient(
+export const { useI18n, I18nProviderClient, useCurrentLocale } = createI18nClient(
   {
     en: async () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
