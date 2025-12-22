@@ -72,7 +72,14 @@ export const ExercisesSelection = ({
         <div className="max-w-4xl mx-auto">
           <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
             {flatExercises.map((item) => (
-              <ExerciseListItem />
+              <ExerciseListItem
+                exercise={item.exercise}
+                isShuffling={shufflingExerciseId === item.exercise.id}
+                key={item.id}
+                muscle={item.muscle}
+                onDelete={onDelete}
+                onShuffle={onShuffle}
+              />
             ))}
             <div className="border-t border-slate-200 dark:border-slate-800">
               <button
