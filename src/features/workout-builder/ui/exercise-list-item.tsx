@@ -1,5 +1,8 @@
 import React from "react";
+import Image from "next/image";
 import { BarChart3, GripVertical, Trash2 } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { useCurrentLocale, useI18n } from "locales/client";
 
 import useBoolean from "@/shared/hooks/useBoolean";
@@ -28,19 +31,47 @@ export const ExerciseListItem = React.memo(function ExerciseListItem({
   const locale = useCurrentLocale();
   const playVideo = useBoolean();
 
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({ id: exercise.id });
+
   const exerciseName = locale === "fr" ? exercise.name : exercise.nameEn;
 
   return (
     <div
-      className={`flex items-center gap-3 p-3`}
+      className={`flex items-center gap-3 p-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 select-none ${isDragging ? "shadow-lg" : ""}`}
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        zIndex: isDragging ? 1000 : 1,
+        position: isDragging ? "relative" : "static",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        MozUserSelect: "none",
+        msUserSelect: "none",
+      }}
     >
-      <div>
+      <div
+        className="cursor-grab active:cursor-grabbing touch-none select-none p-1 -m-1"
+        style={{ touchAction: "none" }}
+        {...attributes}
+        {...listeners}
+      >
         <GripVertical className="w-5 h-5 text-slate-400" />
       </div>
 
       {
         exercise.fullVideoImageUrl && (
-          <div>image</div>
+          <div
+            className="relative h-10 w-10 rounded overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-800 cursor-pointer border border-slate-200 dark:border-slate-700/50"
+          >
+            <Image
+              alt={exerciseName ?? ""}
+              className="w-full h-full object-cover scale-[1.5]"
+              height={32}
+              loading="lazy"
+              src={exercise.fullVideoImageUrl}
+              width={32}
+            />
+          </div>
         )
       }
       <div

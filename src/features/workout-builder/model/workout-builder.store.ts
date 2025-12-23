@@ -23,6 +23,7 @@ interface WorkoutBuilderState {
   clearEquipment: () => void;
   toggleMuscle: (muscle: ExerciseAttributeValueEnum) => void;
   fetchExercises: () => Promise<void>;
+  setExercisesOrder: (order: string[]) => void;
 }
 
 export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => ({
@@ -68,6 +69,7 @@ export const useWorkoutBuilderStore = create<WorkoutBuilderState>((set, get) => 
       set({ exercisesError: error, isLoadingExercises: false });
     }
   },
+  setExercisesOrder: (order) => set({ exercisesOrder: order }),
   toggleMuscle: (muscle) =>
     set((state) => ({
       selectedMuscles: state.selectedMuscles.includes(muscle)

@@ -17,6 +17,7 @@ export function useWorkoutStepper() {
     nextStep,
     prevStep,
     fetchExercises,
+    setExercisesOrder,
   } = useWorkoutBuilderStore();
   return {
     // state
@@ -42,5 +43,6 @@ export function useWorkoutStepper() {
     exercisesOrder,
 
     fetchExercises,
+    setExercisesOrder,
   }
 }

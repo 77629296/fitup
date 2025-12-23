@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Loader2, Plus } from "lucide-react";
+import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEndEvent, MouseSensor } from "@dnd-kit/core";
 
 import { ExerciseWithAttributes } from '../types';
 import { useWorkoutStepper } from "../hooks/use-workout-stepper";
@@ -29,7 +31,24 @@ export const ExercisesSelection = ({
 }: ExercisesSelectionProps) => {
   const t = useI18n();
   const [flatExercises, setFlatExercises] = useState<{ id: string; muscle: string; exercise: ExerciseWithAttributes }[]>([]);
-  const { exercisesOrder } = useWorkoutStepper();
+  const { setExercisesOrder, exercisesOrder } = useWorkoutStepper();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 100,
+        tolerance: 5,
+      },
+    }),
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 0,
+        distance: 0,
+      },
+    }),
+  );
+
+  const sortableItems = useMemo(() => flatExercises.map((item) => item.id), [flatExercises]);
 
   const flatExercisesComputed = useMemo(() => {
     console.log('exercisesByMuscle', exercisesByMuscle)
@@ -55,6 +74,10 @@ export const ExercisesSelection = ({
     setFlatExercises(flatExercisesComputed);
   }, [flatExercisesComputed]);
 
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    console.log("handleDragEnd");
+  }, [setExercisesOrder]);
+
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -70,29 +93,34 @@ export const ExercisesSelection = ({
     <div className="space-y-6">
       {flatExercises.length > 0 ? (
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-            {flatExercises.map((item) => (
-              <ExerciseListItem
-                exercise={item.exercise}
-                isShuffling={shufflingExerciseId === item.exercise.id}
-                key={item.id}
-                muscle={item.muscle}
-                onDelete={onDelete}
-                onShuffle={onShuffle}
-              />
-            ))}
-            <div className="border-t border-slate-200 dark:border-slate-800">
-              <button
-                className="w-full flex items-center gap-3 py-4 px-4 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
-                onClick={onAdd}
-              >
-                <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
-                  <Plus className="h-4 w-4 text-white" />
+          <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} sensors={sensors}>
+            <SortableContext items={sortableItems} strategy={verticalListSortingStrategy}>
+              <div className="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
+                {flatExercises.map((item) => (
+                  <ExerciseListItem
+                    exercise={item.exercise}
+                    isShuffling={shufflingExerciseId === item.exercise.id}
+                    key={item.id}
+                    muscle={item.muscle}
+                    onDelete={onDelete}
+                    onShuffle={onShuffle}
+                  />
+                ))}
+                <div className="border-t border-slate-200 dark:border-slate-800">
+                  <button
+                    className="w-full flex items-center gap-3 py-4 px-4 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 transition-colors"
+                    onClick={onAdd}
+                  >
+                    <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
+                      <Plus className="h-4 w-4 text-white" />
+                    </div>
+                    <span className="font-medium">{t("commons.add")}</span>
+                  </button>
                 </div>
-                <span className="font-medium">{t("commons.add")}</span>
-              </button>
-            </div>
-          </div>
+              </div>
+            </SortableContext>
+          </DndContext>
+
         </div>
       ) : error ? (
         <div className="text-center py-20">
