@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { BarChart3, GripVertical, Trash2 } from "lucide-react";
+import { Play, BarChart3, GripVertical, Trash2 } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useCurrentLocale, useI18n } from "locales/client";
@@ -62,6 +62,7 @@ export const ExerciseListItem = React.memo(function ExerciseListItem({
         exercise.fullVideoImageUrl && (
           <div
             className="relative h-10 w-10 rounded overflow-hidden shrink-0 bg-slate-200 dark:bg-slate-800 cursor-pointer border border-slate-200 dark:border-slate-700/50"
+            onClick={playVideo.setTrue}
           >
             <Image
               alt={exerciseName ?? ""}
@@ -71,6 +72,9 @@ export const ExerciseListItem = React.memo(function ExerciseListItem({
               src={exercise.fullVideoImageUrl}
               width={32}
             />
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+              <Play className="h-3 w-3 text-white fill-current" />
+            </div>
           </div>
         )
       }
