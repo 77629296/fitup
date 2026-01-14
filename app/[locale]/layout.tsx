@@ -1,7 +1,11 @@
 import type { ReactElement } from "react";
 import type { Metadata } from "next";
+import { Inter, Permanent_Marker } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 
 import { Providers } from "app/[locale]/providers";
+import { cn } from "@/shared/lib/utils";
 
 import "@/shared/styles/globals.css";
 
@@ -48,6 +52,19 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const permanentMarker = Permanent_Marker({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-permanent-marker",
+  display: "swap",
+});
+
 export const preferredRegion = ["fra1", "sfo1", "iad1"];
 
 interface RootLayoutProps {
@@ -76,6 +93,14 @@ export default async function RootLayout({ params, children }: RootLayoutProps) 
         </head>
 
         <body
+          className={cn(
+            "flex items-center justify-center min-h-screen w-full max-sm:p-0 max-sm:min-h-full bg-base-200 dark:bg-[#18181b] dark:text-gray-200 antialiased",
+            "bg-hero-light dark:bg-hero-dark",
+            GeistMono.variable,
+            GeistSans.variable,
+            inter.variable,
+            permanentMarker.variable,
+          )}
           suppressHydrationWarning
         >
           <Providers locale={locale}>
