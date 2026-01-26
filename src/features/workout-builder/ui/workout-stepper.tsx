@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { useI18n } from "locales/client";
 import { ExerciseAttributeValueEnum } from "@prisma/client";
 import { useQueryState } from "nuqs";
@@ -7,6 +8,7 @@ import { useQueryState } from "nuqs";
 import useBoolean from "@/shared/hooks/useBoolean";
 
 import { useWorkoutStepper } from '../hooks/use-workout-stepper';
+import { useWorkoutSession } from "../../workout-session/model/use-workout-session";
 import { StepperHeader } from './stepper-header';
 import { EquipmentSelection } from './equipment-selection'
 import { MuscleSelection } from './muscle-selection';
@@ -14,7 +16,7 @@ import { ExercisesSelection } from './exercises-selection';
 import { StepperStepProps } from "../types";
 import { WorkoutBuilderFooter } from "./workout-stepper-footer";
 import { AddExerciseModal } from "./add-exercise-modal";
-import { useEffect } from "react";
+import { ExerciseWithAttributes } from "@/entities/exercise/types/exercise.types";
 
 export function WorkoutStepper() {
   const t = useI18n();
@@ -32,13 +34,31 @@ export function WorkoutStepper() {
     nextStep,
     prevStep,
     fetchExercises,
+    exercisesOrder,
   } = useWorkoutStepper();
+
+  const [flatExercises, setFlatExercises] = useState<{ id: string; muscle: string; exercise: ExerciseWithAttributes }[]>([]);
+
+  useEffect(() => {
+    if (exercisesByMuscle.length > 0) {
+      const flat = exercisesByMuscle.flatMap((group) =>
+        group.exercises.map((exercise: ExerciseWithAttributes) => ({
+          id: exercise.id,
+          muscle: group.muscle,
+          exercise,
+        }))
+      )
+      setFlatExercises(flat);
+    }
+  }, [exercisesByMuscle])
 
   useEffect(() => {
     if (currentStep === 3 && !fromSession) {
       fetchExercises();
     }
   }, [currentStep, selectedEquipment, selectedMuscles, fromSession]);
+
+  const { startWorkout } = useWorkoutSession();
 
   const handleToggleMuscle = (muscle: ExerciseAttributeValueEnum) => {
     toggleMuscle(muscle);
@@ -50,7 +70,26 @@ export function WorkoutStepper() {
     addExerciseModal.setTrue();
   };
 
-  const handleStartWorkout = () => { };
+  const orderedExercises = useMemo(() => {
+    if (flatExercises.length === 0) return [];
+
+    if (exercisesOrder.length === 0) {
+      return flatExercises.map(item => item.exercise);
+    }
+
+    const exerciseMap = new Map(flatExercises.map(item => [item.id, item.exercise]))
+    const orderedResults = exercisesOrder.map(id => exerciseMap.get(id)).filter(Boolean) as ExerciseWithAttributes[];
+    const remainingExercises = flatExercises.filter(item => !exercisesOrder.includes(item.id)).map(item => item.exercise);
+    return [...orderedResults, ...remainingExercises];
+  }, [flatExercises, exercisesOrder])
+
+  const handleStartWorkout = () => {
+    if (orderedExercises.length > 0) {
+      startWorkout(orderedExercises, selectedEquipment, selectedMuscles);
+    } else {
+      console.log('No exercises to start workout with');
+    }
+  };
   const canContinue = true;
 
   const handleToggleEquipment = (equipment: ExerciseAttributeValueEnum) => {
