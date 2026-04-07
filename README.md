@@ -1,2 +1,2 @@
 <div align="center">
-<h1>fitup</h1>
+<h1>fitup </h1>
